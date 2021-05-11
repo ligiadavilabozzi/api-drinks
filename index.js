@@ -42,18 +42,51 @@ window.onload = () => {
                 hyphenToUnderline = [/-/g, '_'],
                 underlineToHyphen = [/_/g, '-']
             defaultValidation = () => validators.push(spacesConsecutive, accentuationVowelA, accentuationVowelAUpper, accentuationVowelE, accentuationVowelEUpper, accentuationVowelI, accentuationVowelIUpper, accentuationVowelO, accentuationVowelOUpper, accentuationVowelU, accentuationVowelUUpper, accentuationC, accentuationCUpper, accentuationN, accentuationNUpper, notAlfaNum, spaceAny, spacesConsecutive, duplicatedHyphens, duplicatedUnderlines)
-
             switch (type) {
                 case 'text':
                     validators.push(spacesConsecutive)
                     break
                 case 'class':
                     str = str.toLowerCase()
-                    spaceAny.push('-');
+                    spaceAny.push('-')
                     validators.unshift(underlineToHyphen)
                     defaultValidation()
+                    break
+                case 'id':
+                    spaceAny.push('_')
+                    validators.unshift(hyphenToUnderline)
+                    defaultValidation()
+                    break
+                default:
+                    spaceAny.push(' ')
+                    defaultValidation()
             }
+            for (validator of validators) {
+                if (type === 'class') {
+                    newStr = newStr.toLowerCase()
+                }
+                newStr = newStr.replace(validator[0], validator[1])
+                if (type === 'class') {
+                    newStr = newStr.toLowerCase()
+                }
+            }
+            return newStr
         }
+        const queryParamsData = {
+            alcoholic: '',
+            alcoholicList: false,
+            category: '',
+            categoryList: false,
+            glass: '',
+            glassList: false,
+            ingredient: '',
+            ingredientId: '',
+            ingredientDetail: false,
+            drinkId: '',
+            firstLetter: '',
+            nameSearch: '',
+        }
+
     }
     init()
 }
