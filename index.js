@@ -42,6 +42,17 @@ window.onload = () => {
                 hyphenToUnderline = [/-/g, '_'],
                 underlineToHyphen = [/_/g, '-']
             defaultValidation = () => validators.push(spacesConsecutive, accentuationVowelA, accentuationVowelAUpper, accentuationVowelE, accentuationVowelEUpper, accentuationVowelI, accentuationVowelIUpper, accentuationVowelO, accentuationVowelOUpper, accentuationVowelU, accentuationVowelUUpper, accentuationC, accentuationCUpper, accentuationN, accentuationNUpper, notAlfaNum, spaceAny, spacesConsecutive, duplicatedHyphens, duplicatedUnderlines)
+
+            switch (type) {
+                case 'text':
+                    validators.push(spacesConsecutive)
+                    break
+                case 'class':
+                    str = str.toLowerCase()
+                    spaceAny.push('-');
+                    validators.unshift(underlineToHyphen)
+                    defaultValidation()
+            }
         }
     }
     init()
