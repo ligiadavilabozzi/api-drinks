@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drinks API com Fetch (JS)</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <style>
+        body {
+            scroll-behavior: smooth;
+        }
+
+        .result-main {
+            max-height: 21vh;
+            overflow-y: scroll;
+        }
+
+        .result-main::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .result-main::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .result-main::-webkit-scrollbar-track-piece {
+            width: 2px;
+            background: rgba(52, 58, 64, .7);
+            border: 2px solid #f8f9fa;
+        }
+
+        .result-main::-webkit-scrollbar-thumb {
+            width: 4px;
+            background-color: #ffc105;
+            border: 2px solid #ffc105;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body class="container-fluid px-0">
+
+    <!-- nav#mainNavbar.main-navbar -->
+    <nav id="mainNavbar" class="navbar navbar-expand-lg navbar-light bg-light main-navbar">
+
+        <a class="navbar-brand mx-2" href="#">Drinks API com Fetch (JS)</a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- div#navbarBar -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Início</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="ajaxDropdownMenu" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">AJAX</a>
+                    <div class="dropdown-menu" aria-labelledby="ajaxDropdownMenu">
+                        <a class="dropdown-item" href="https://marcelo-diament.github.io/Github-API-with-AJAX/"
+                            title="Acessar projeto Github API AJAX" target="_blank" rel="noopener noreferrer">Site</a>
+                        <a class="dropdown-item" href="https://github.com/marcelo-diament/Github-API-with-AJAX/"
+                            title="Acessar repositório Github API AJAX" target="_blank"
+                            rel="noopener noreferrer">Repositório</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" href="#" id="fetchDropdownMenu" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Fetch <span
+                            class="sr-only">(current)</span></a>
+                    <div class="dropdown-menu dropdown-menu-md-right" aria-labelledby="fetchDropdownMenu">
+                        <a class="dropdown-item" href="https://marcelo-diament.github.io/JS-API-Fetch-Drinks-Catalog/"
+                            title="Acessar projeto Drinks API Fetch" target="_blank" rel="noopener noreferrer">Site</a>
+                        <a class="dropdown-item" href="https://github.com/Marcelo-Diament/JS-API-Fetch-Drinks-Catalog"
+                            title="Acessar repositório Drinks API Fetch" target="_blank"
+                            rel="noopener noreferrer">Repositório</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Axios</a>
+                </li>
+            </ul>
+
+        </div><!-- /div#navbarBar -->
+
+    </nav><!-- /nav#mainNavbar.main-navbar -->
+
+    <!-- main#mainContainer -->
+    <main id="mainContainer" class="row w-100 mx-0">
+
+        <!-- header#mainHeader -->
+        <header id="mainHeader" class="col-12 my-5 row">
+            <h1 class="col-12 text-center main-title">Drinks | Fetch API JS</h1>
+            <p class="col-12 text-center main-description">Informações sobre Drinks e busca por nome, categoria, tipo de
+                copo
+                e muito mais.</p>
+        </header><!-- /header#mainHeader -->
+
+        <!-- session#controlsContainer.controls-container -->
+        <session id="controlsContainer" class="bg-light mx-auto my-3 p-4 container controls-container">
+
+            <!-- header#controlsHeader.controls-header -->
+            <header id="controlsHeader" class="row controls-header">
+                <h2 class="col-12 controls-title">Buscar Drinks por...</h2>
+                <p class="col-12 controls-description">Selecione o tipo de busca desejado e navegue pelas receitas dos
+                    drinks
+                    encontrados.</p>
+            </header><!-- /header#controlsHeader.controls-header -->
+
+            <!-- div#controlsMain.controls-main -->
+            <div id="controlsMain" class="row controls-main">
+
+                <!-- div#nameControl.control.control-txt -->
+                <div id="nameControl" class="col-12 col-md-6 col-lg-4 my-3 control control-txt">
+
+                    <!-- article.control-container -->
+                    <article class="border rounded p-3 control-container">
+
+                        <!-- header.control-header -->
+                        <header class="control-header" data-toggle="collapse" href="#nameForm" role="button"
+                            aria-expanded="false" aria-controls="nameForm">
+                            <h3 class="control-title">Nome</h3>
+                            <small id="nameHelp" class="form-text text-muted control-description">Traz drinks com nome
+                                igual ou
+                                similar</small>
+                        </header><!-- /header.control-header -->
+
+                        <!-- form#nameForm.control-form -->
+                        <form id="nameForm" action="" method="get" class="mt-3 control-form collapse">
+                            <div class="form-group">
+                                <label for="name" class="text-dark">Insira o nome</label>
+                                <input type="text" class="form-control" id="name" aria-describedby="nameHelp"
+                                    placeholder="Caipirinha" required>
+                            </div>
+                            <button id="nameFormBtn" type="button"
+                                onclick="getDrinksByName(document.querySelector('#name').value)"
+                                class="btn btn-warning border border-rounded border-dark w-100">Buscar</button>
+                        </form><!-- /form#nameForm.control-form -->
+
+                    </article><!-- /article.control-container -->
+
+                </div><!-- /div#nameControl.control.control-txt -->
+
+                <!-- div#categoryControl.control.control-sel -->
+                <div id="categoryControl" class="col-12 col-md-6 col-lg-4 my-3 control control-sel">
+
+                    <!-- article.control-container -->
+                    <article class="border rounded p-3 control-container">
+
+                        <!-- header.control-header -->
+                        <header class="control-header" data-toggle="collapse" href="#categoryForm" role="button"
+                            aria-expanded="false" aria-controls="categoryForm">
+                            <h3 class="control-title">Categoria</h3>
+                            <small id="categoryHelp" class="form-text text-muted control-description">Traz drinks da
+                                categoria</small>
+                        </header><!-- /header.control-header -->
+
+                        <!-- form#categoryForm.control-form -->
+                        <form id="categoryForm" action="" method="get" class="mt-3 control-form collapse">
+                            <div class="form-group">
+                                <label for="category" class="text-dark">Selecione a categoria</label>
+                                <select name="category" id="category" class="form-control"
+                                    aria-describedby="categoryHelp" required>
+                                    <option value="" selected disabled>Selecionar...</option>
+                                </select>
+                            </div>
+                            <button id="categoryFormBtn" type="button"
+                                onclick="getDrinksByCategory(document.querySelector('#category').value)"
+                                class="btn btn-warning border border-rounded border-dark w-100">Buscar</button>
+                        </form><!-- /form.#categoryFormcontrol-form -->
+
+                    </article><!-- /article.control-container -->
+
+                </div><!-- /div#categoryControl.control.control-sel -->
+
+                <!-- div#randomControl.control.control-btn -->
+                <div id="randomControl" class="col-12 col-md-6 col-lg-4 my-3 control control-btn">
+
+                    <!-- article.control-container -->
+                    <article class="border rounded p-3 control-container">
+
+                        <!-- header.control-header -->
+                        <header class="control-header" data-toggle="collapse" href="#randomForm" role="button"
+                            aria-expanded="false" aria-controls="randomForm">
+                            <h3 class="control-title">Randômico</h3>
+                            <small id="randomHelp" class="form-text text-muted control-description">Traz um drink
+                                aleatoriamente</small>
+                        </header><!-- /header.control-header -->
+
+                        <!-- form#randomForm.control-form -->
+                        <form id="randomForm" action="" method="get" class="mt-3 control-form collapse">
+                            <button id="randomFormBtn" type="button" onclick="getRandomDrink()"
+                                class="btn btn-warning border border-rounded border-dark w-100">Buscar</button>
+                        </form><!-- /form.#randomFormcontrol-form -->
+
+                    </article><!-- /article.control-container -->
+
+                </div><!-- /div#randomControl.control.control-btn -->
+
+                <!-- div#firstLetterControl.control.control-txt -->
+                <div id="firstLetterControl" class="col-12 col-md-6 col-lg-4 my-3 control control-txt">
+
+                    <!-- article.control-container -->
+                    <article class="border rounded p-3 control-container">
+
+                        <!-- header.control-header -->
+                        <header class="control-header" data-toggle="collapse" href="#firstLetterForm" role="button"
+                            aria-expanded="false" aria-controls="firstLetterForm">
+                            <h3 class="control-title">Primeira Letra</h3>
+                            <small id="firstLetterHelp" class="form-text text-muted control-description">Traz drinks que
+                                começam com a
+                                letra</small>
+                        </header><!-- /header.control-header -->
+
+                        <!-- form#firstLetterForm.control-form -->
+                        <form id="firstLetterForm" action="" method="get" class="mt-3 control-form collapse">
+                            <div class="form-group">
+                                <label for="firstLetter" class="text-dark">Insira a primeira letra</label>
+                                <input type="text" class="form-control" id="firstLetter"
+                                    aria-describedby="firstLetterHelp" placeholder="A" required>
+                            </div>
+                            <button id="firstLetterFormBtn" type="button"
+                                onclick="getDrinksByFirstLetter(document.querySelector('#firstLetter').value)"
+                                class="btn btn-warning border border-rounded border-dark w-100">Buscar</button>
+                        </form><!-- /form#firstLetterForm.control-form -->
+
+                    </article><!-- /article.control-container -->
+
+                </div><!-- /div#firstLetterControl.control.control-txt -->
+
+                <!-- div#glassControl.control.control-sel -->
+                <div id="glassControl" class="col-12 col-md-6 col-lg-4 my-3 control control-sel">
+
+                    <!-- article.control-container -->
+                    <article class="border rounded p-3 control-container">
+
+                        <!-- header.control-header -->
+                        <header class="control-header" data-toggle="collapse" href="#glassForm" role="button"
+                            aria-expanded="false" aria-controls="glassForm">
+                            <h3 class="control-title">Tipos de Copo</h3>
+                            <small id="glassHelp" class="form-text text-muted control-description">Traz drinks para o
+                                copo</small>
+                        </header><!-- /header.control-header -->
+
+                        <!-- form#glassForm.control-form -->
+                        <form id="glassForm" action="" method="get" class="mt-3 control-form collapse">
+                            <div class="form-group">
+                                <label for="glass" class="text-dark">Selecione o copo</label>
+                                <select name="glass" id="glass" class="form-control" aria-describedby="glassHelp"
+                                    required>
+                                    <option value="" selected disabled>Selecionar...</option>
+                                </select>
+                            </div>
+                            <button id="glassFormBtn" type="button"
+                                onclick="getDrinksByGlass(document.querySelector('#glass').value)"
+                                class="btn btn-warning border border-rounded border-dark w-100">Buscar</button>
+                        </form><!-- /form.#glassFormcontrol-form -->
+
+                    </article><!-- /article.control-container -->
+
+                </div><!-- /div#glassControl.control.control-sel -->
+
+                <!-- div#alcoholicControl.control.control-sel -->
+                <div id="alcoholicControl" class="col-12 col-md-6 col-lg-4 my-3 control control-sel">
+
+                    <!-- article.control-container -->
+                    <article class="border rounded p-3 control-container">
+
+                        <!-- header.control-header -->
+                        <header class="control-header" data-toggle="collapse" href="#alcoholicForm" role="button"
+                            aria-expanded="false" aria-controls="alcoholicForm">
+                            <h3 class="control-title">Alcoólicos ou não?</h3>
+                            <small id="alcoholicHelp" class="form-text text-muted control-description">Traz drinks com
+                                ou sem
+                                álcool</small>
+                        </header><!-- /header.control-header -->
+
+                        <!-- form#alcoholicForm.control-form -->
+                        <form id="alcoholicForm" action="" method="get" class="mt-3 control-form collapse">
+                            <div class="form-group">
+                                <label for="alcoholic" class="text-dark">Selecione a opção</label>
+                                <select name="alcoholic" id="alcoholic" class="form-control"
+                                    aria-describedby="alcoholicHelp" required>
+                                    <option value="" selected disabled>Selecionar...</option>
+                                </select>
+                            </div>
+                            <button id="alcoholicFormBtn" type="button"
+                                onclick="getDrinksByAlcoholic(document.querySelector('#alcoholic').value)"
+                                class="btn btn-warning border border-rounded border-dark w-100">Buscar</button>
+                        </form><!-- /form.#alcoholicFormcontrol-form -->
+
+                    </article><!-- /article.control-container -->
+
+                </div><!-- /div#alcoholicControl.control.control-sel -->
+
+            </div><!-- /div#controlsMain.controls-main -->
+
+        </session><!-- /session#controlsContainer.controls-container -->
+
+        <!-- session#resultsContainer.results-container -->
+        <session id="resultsContainer" class="bg-light mx-auto my-3 p-4 container results-container">
+
+            <!-- header#resultsHeader.results-header -->
+            <header id="resultsHeader" class="row results-header">
+                <h2 class="col-12 results-title">Resultados</h2>
+                <p class="col-12 results-description">Veja o que encontramos para <span id="searchMade">a sua
+                        busca</span>:</p>
+            </header><!-- /header#resultsHeader.results-header -->
+
+            <!-- div#resultsMain.results-main -->
+            <div id="resultsMain"
+                class="d-flex flex-row flex-wrap justify-content-start align-items-stretch results-main">
+            </div><!-- /div#resultsMain.results-main -->
+
+            <!-- footer#resultsFooter.results-footer -->
+            <footer id="resultsFooter" class="row results-footer">
+                <button id="resultsFooterCleanBtn" onclick="limparResultadosDrinks()"
+                    class="btn btn-secondary col-12 col-md-2 mx-0 mx-md-2 my-2">Limpar
+                    resultados</button>
+                <button id="resultsFooterRandomDrinkBtn" onclick="getRandomDrink()"
+                    class="btn btn-warning col-12 col-md-2 mx-0 mx-md-2 my-2 border-dark">Drink Sorteado</button>
+            </footer><!-- /footer#resultsFooter.results-footer -->
+
+        </session><!-- /session#resultsContainer.results-container -->
+
+    </main><!-- /main#mainContainer -->
+
+    <!-- Bootstrap (and Popper and JQuery too, as Bootstraps dependencies) scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
+    </script><!-- /Bootstrap scripts -->
+
+    <!-- Custom Script -->
+    <script src="./main.js"></script><!-- /Custom Script -->
+
+</body>
+
+</html>
