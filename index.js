@@ -97,7 +97,14 @@ window.onload = () => {
             thumb: '',
             ingredients: [],
         }
-
+        const ingredientData = {
+            id: '',
+            ingredient: '',
+            description: '',
+            type: '',
+            alcohol: '',
+            ABV: '',
+        }
 
     }
     init()
