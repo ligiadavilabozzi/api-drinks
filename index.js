@@ -86,6 +86,18 @@ window.onload = () => {
             firstLetter: '',
             nameSearch: '',
         }
+        const drinkData = {
+            id: '',
+            drink: '',
+            category: '',
+            IBA: '',
+            alcoholic: '',
+            glass: '',
+            instructions: '',
+            thumb: '',
+            ingredients: [],
+        }
+
 
     }
     init()
